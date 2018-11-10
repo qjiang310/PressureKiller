@@ -1,89 +1,130 @@
-  boolean colorRandomStroke = false;
-  boolean colorSquare = false;
-  boolean colorCircle = false;
-  boolean menuOn = false;
-  float stroke_weight =2;
-  float colorStroke = 0;
-  int stroke_color = 0;
-  //int fill_grey =0;
-  String text_1 = "Click m to display menue";
-  String text_menu = "Press m to hide menue\nPress 1, 2, 3 to select paint tool\nPress x to clear the canvas\nPress s to save as jpg.\nPress p to save as pdf.";
-  
-  void setup() {
-    size(1920, 860);
-    background(255);
-    colorMode(HSB, 255);//could set max range
-    //in a raninbow mode
-     //size(100, 100, P2D);
-    
-    }  
-    void draw() {
-     textSize(40);
-     fill(0, 70, 153, 204);
-     text( text_1, 50, 50); 
+boolean colorRandomStroke = false;
+boolean colorSquare = false;
+boolean colorCircle = false;
+boolean menuOn = false;
+float stroke_weight =5;
+float colorStroke = 0;
+int stroke_color = 0;
+//int fill_grey =0;
+String text_1 = "Click m to display menu, click x to restart\n";
+String text_menu = "Press 1, 2, 3 to select paint tool\n" 
+                 + "Press s to save as jpg.\n"
+                 + "Press p to save as pdf.";
 
-     if(menuOn == true){ 
-     textSize(20);
-     fill(0, 70, 153, 204);
-     text( text_menu, 50, 90); }
-     
-    
-     if(colorRandomStroke == true){
-         int dir =1;//need some variable to control if statement, could use boolean
-      //but use -1 and 1 also simple
-       if (colorStroke<255 && dir==1) {  
-          colorStroke++;//neeed a color oscillater
-      }
-      if (colorStroke > 0 && dir == -1) {
-        colorStroke -- ;
-      }
-      if (colorStroke == 255) {
-        dir *= -1;
-      } 
-      if (colorStroke == 0) {
-        dir *= -1;
-    }
+void setup() {
+  size(800, 600);  // FIXME want to make it adaptive to different computer
+  background(255);  // FIXME want to make it chanagable
+  colorMode(HSB, 255);
   
+  textSize(30);
+  fill(0, 102, 153, 204);
+  text(text_1, 50, 50);
+}
+
+void draw() {
+  userSet();
   
-    println(colorStroke);
-    //  stroke(grey,0,0);//rgb
-    stroke(colorStroke, 100, 255);//hue, saturation, brightness
-    //use hsb, 
-    //colorMode()
-    colorStroke =random(0, 255);
-   // stroke(grey);
-    stroke_weight = random(0, 20);
-    strokeWeight(stroke_weight);
-  
-    smooth();
-    if (mousePressed) {
-      line(pmouseX, pmouseY,mouseX, mouseY);
-    }
-   }
-    
-    if(keyPressed){
-    if(key == 'x' || key == 'X'){
-   // clear();//clear all including the background
-    clear();
-   background(255);}
-   if(key == 'S' || key == 's'){//Save jpg
-   save("drawing.jpg");
- }
-   if(key == 'p' || key == 'P'){
-   println("recording file");
-   beginRecord(PDF, "drawing.pdf");
-   }
-   if(key == 'm' || key == 'M'){
-   menuOn = true;}
-    if(key == '1' || key == '!'){//mode1: colorRandomStroke
-   colorRandomStroke = true;
-   }
-   if(key == '2' || key == '@'){//mode2: square
-   colorSquare = true;
-   }
-   if(key == '3' || key == '#'){
-   colorCircle = true;  
-   }
-    
+  if (menuOn == true) {
+    textSize(20);
+    fill(0, 70, 153, 204);
+    text(text_menu, 50, 90);
   }
+  if (colorRandomStroke) {
+    mode1();
   }
+  if (colorSquare) {
+    mode2();
+  }
+  if (colorCircle) {
+    mode3();
+  }
+}
+
+void userSet() {
+  if (keyPressed) {
+    if (key == 'x' || key == 'X') {
+      clear();
+      background(255);
+      colorRandomStroke  = false;
+      colorSquare = false;
+      colorCircle = false;
+      textSize(30);
+      fill(0, 102, 153, 204);
+      text(text_1, 50, 50);
+    }
+    if (key == 'S' || key == 's') {
+      save("drawing.jpg");
+    }
+    if (key == 'p' || key == 'P') {
+      println("drawing file");
+      beginRecord(PDF, "drawing.pdf");
+    }
+    if (key == 'm' || key == 'M') {
+      if (menuOn == false) {
+        menuOn = true;
+      } else {
+        menuOn = false;
+      }
+    }
+    if (key == '1') {
+      colorRandomStroke = true;
+      colorSquare = false;
+      colorCircle = false;
+    }
+    if (key == '2') {
+      colorRandomStroke = false;
+      colorSquare = true;
+      colorCircle = false;
+    }
+    if (key == '3') {
+      colorRandomStroke = false;
+      colorSquare = false;
+      colorCircle = true;
+    }
+  }
+}
+void mode1() {
+  colorStroke = random(0, 255);
+  stroke(colorStroke, 100, 255);
+  stroke_weight = random(10, 20);
+  strokeWeight(stroke_weight);
+  
+  smooth();
+  if (mousePressed && (mouseButton == LEFT)) {
+    line(pmouseX, pmouseY, mouseX, mouseY);
+  } else if (mousePressed && (mouseButton == RIGHT)) {
+    line(800-pmouseX, 800-pmouseY, mouseX, mouseY);
+  }
+}
+void mode2() {//Sqaure
+  colorStroke = random(0, 255);
+  stroke(colorStroke, 100, 255);
+  stroke_weight = random(3, 20); 
+  strokeWeight(stroke_weight);
+  float c = random(0, 255);
+  float w = random(30,35);
+  if (mousePressed && (mouseButton == LEFT)) {
+    rect(mouseX-10, mouseY-10, w, w);
+    fill(c,10);
+  } else if (mousePressed && (mouseButton == RIGHT)) {
+    rect(mouseX-10, mouseY-10, w, w);
+    rect(800-(mouseX-10), 800-(mouseY-10), w, w);
+    fill(c,10);
+  }
+}
+void mode3() {
+   colorStroke = random(0, 255);
+   stroke(colorStroke, 100, 255);
+   stroke_weight = random(2, 5); 
+   strokeWeight(stroke_weight);
+   float c = random (0, 255);
+   float s = random(85,90);
+   if(mousePressed && (mouseButton == LEFT)) { 
+    fill(c,10);
+    ellipse(mouseX,mouseY,s,s);
+  } else if(mousePressed && (mouseButton == RIGHT)){
+    fill(c);
+    ellipse(mouseX,mouseY,s,s);
+    ellipse(800-mouseX,mouseY,s,s);
+  }
+}
