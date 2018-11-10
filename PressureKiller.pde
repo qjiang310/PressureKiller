@@ -10,17 +10,18 @@
   String text_menu = "Press m to hide menue\nPress 1, 2, 3 to select paint tool\nPress x to clear the canvas\nPress s to save as jpg.\nPress p to save as pdf.";
   
   void setup() {
-    size(1920, 1920);
+    size(1920, 860);
     background(255);
     colorMode(HSB, 255);//could set max range
     //in a raninbow mode
      //size(100, 100, P2D);
-     textSize(40);
-     fill(0, 102, 153, 204);
-     text( text_1, 50, 50); 
-
+    
     }  
     void draw() {
+     textSize(40);
+     fill(0, 70, 153, 204);
+     text( text_1, 50, 50); 
+
      if(menuOn == true){ 
      textSize(20);
      fill(0, 70, 153, 204);
