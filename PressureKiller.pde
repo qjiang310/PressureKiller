@@ -10,11 +10,13 @@ String text_1 = "Click m to display menu, click x to restart\n";
 String text_menu = "Press 1, 2, 3 to select paint tool\n" 
                  + "Press s to save as jpg.\n"
                  + "Press p to save as pdf.";
+int count = 1;
 
 void setup() {
   size(800, 600);  // FIXME want to make it adaptive to different computer
-  background(255);  // FIXME want to make it chanagable
   colorMode(HSB, 255);
+  background(255);  // FIXME want to make it chanagable
+  
   
   textSize(30);
   fill(0, 102, 153, 204);
@@ -38,6 +40,8 @@ void draw() {
   if (colorCircle) {
     mode3();
   }
+  
+  showSentence();
 }
 
 void userSet() {
@@ -128,3 +132,17 @@ void mode3() {
     ellipse(800-mouseX,mouseY,s,s);
   }
 }
+
+void showSentence() {
+  if (count%500 == 0) {
+    textSize(40);
+    fill(0, 500, 200, 100);
+    text("Try everything you can imagine", random(width-300), random(height-20));
+  }
+    count++;
+}
+
+
+    
+    
+  
